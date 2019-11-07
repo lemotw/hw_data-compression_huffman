@@ -1,0 +1,8 @@
+#Output object file
+obj/*
+
+#Output ELF
+main
+
+#Program produce file
+output
