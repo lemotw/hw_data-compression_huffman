@@ -19,7 +19,7 @@ typedef struct Node {
 Node* newNode();
 Node* findNode(Node* root, char data);
 void getNodeBits(Node* root, BitWiseStack* s);
-Node* fixed(Node* root, unsigned char data, BitWiseStack* s);
+Node* fixed(Node* root, unsigned char data);
 
 void updateShows(Node* root);
 

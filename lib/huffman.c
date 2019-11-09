@@ -73,10 +73,8 @@ void getNodeBits(Node* root, BitWiseStack* s)
     killBitWiseStack(&temp, s);
 }
 
-Node* fixed(Node* root, unsigned char data, BitWiseStack* s)
+Node* fixed(Node* root, unsigned char data)
 {
-    push_back_Char(s, data);
-
     root->right = newNode();
     root->left = newNode();
     ((Node*)root->left)->parent = (void*)root;
@@ -139,7 +137,8 @@ void huffmanCoding(Node* root, char data, BitWiseStack* s)
     if(find->status == 1)
     {
         getNodeBits(find, s);
-        updateHuffmanTree(fixed(find, data, s));
+        updateHuffmanTree(fixed(find, data));
+        push_back_Char(s, data);
     }
 
     if(!find->status)

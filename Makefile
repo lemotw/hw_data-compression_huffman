@@ -2,25 +2,42 @@ CC = gcc
 C_FLAG = -g
 
 OBJDIR = ./obj
+LIBOBJDIR = ./obj/lib
 LIBDIR = ./lib
 LIB_OBJFILES =	queue.o \
 		bitwise.o \
-		huffman.o
-TARGET = main
+		huffman.o \
+		filebitreader.o
 
-all: $(TARGET)
+COMPRESS = compress
+DECODE = decode
 
-$(TARGET): main.o
-	$(CC) $(OBJDIR)/*.o -o $(TARGET)
-	@echo -e "\e[42m:::\e[0m \e[38;5;82mLink target(main.o) as excutable file.\e[0m"
 
-main.o: $(LIB_OBJFILES)
-	@echo -e "\e[42m:::\e[0m \e[38;5;82mCompile target(main.c) to object file.\e[0m"
-	$(CC) -c $(C_FLAG) -o $(OBJDIR)/$@ -I $(LIBDIR) main.c
+all: $(COMPRESS) $(DECODE)
 
-$(LIB_OBJFILES): %.o: $(LIBDIR)/%.c $(OBJDIR)
+$(DECODE): decode.o $(LIB_OBJFILES)
+	$(CC) $(OBJDIR)/decode.o $(LIBOBJDIR)/*.o -o $(DECODE)
+	@echo -e "\e[42m:::\e[0m \e[38;5;82mLink target(decode.o) as excutable file.\e[0m"
+
+decode.o: $(LIB_OBJFILES)
+	@echo -e "\e[42m:::\e[0m \e[38;5;82mCompile target(decode.c) to object file.\e[0m"
+	$(CC) -c $(C_FLAG) -o $(OBJDIR)/$@ -I $(LIBDIR) decode.c
+
+$(COMPRESS): compress.o $(LIB_OBJFILES)
+	$(CC) $(OBJDIR)/compress.o $(LIBOBJDIR)/*.o -o $(COMPRESS)
+	@echo -e "\e[42m:::\e[0m \e[38;5;82mLink target(compress.o) as excutable file.\e[0m"
+
+compress.o: $(LIB_OBJFILES)
+	@echo -e "\e[42m:::\e[0m \e[38;5;82mCompile target(compress.c) to object file.\e[0m"
+	$(CC) -c $(C_FLAG) -o $(OBJDIR)/$@ -I $(LIBDIR) compress.c
+
+$(LIB_OBJFILES): %.o: $(LIBDIR)/%.c $(LIBOBJDIR)
 	@echo -e "\e[42m:::\e[0m \e[38;5;82mCompile library to object file.\e[0m"
-	$(CC) -c $(C_FLAG) $< -o $(OBJDIR)/$@
+	$(CC) -c $(C_FLAG) $< -o $(LIBOBJDIR)/$@
+
+$(LIBOBJDIR): $(OBJDIR)
+	@echo -e "\e[42m:::\e[0m \e[38;5;82mCreate object directory(obj/lib)\e[0m"
+	mkdir -p $@
 
 $(OBJDIR):
 	@echo -e "\e[42m:::\e[0m \e[38;5;82mCreate object directory(obj/)\e[0m"

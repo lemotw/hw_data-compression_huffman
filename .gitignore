@@ -2,7 +2,9 @@
 obj/*
 
 #Output ELF
-main
+decode
+compress
 
 #Program produce file
 output
+decode_result
